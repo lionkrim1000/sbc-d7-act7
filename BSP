@@ -1,0 +1,104 @@
+import random
+
+# Dictionary to store user IDs and balances
+userid = {}
+
+def create_account():
+    # Generate a random user ID
+    user_id = random.randint(1000, 9999)
+    
+    # Check if user ID already exists, regenerate if necessary
+    while user_id in userid:
+        user_id = random.randint(1000, 9999)
+    
+    # Initialize balance to 0 for the new account
+    userid[user_id] = 0
+    
+    print(f"Account created successfully. Your User ID is: {user_id}")
+    return user_id  # Return the generated user ID
+
+def deposit(user_id):
+    # Prompt user for amount to deposit
+    amount = float(input("Enter the amount to deposit: "))
+    
+    if amount <= 0:
+        print("Invalid amount. Deposit amount must be positive.")
+        return
+    
+    if user_id in userid:
+        userid[user_id] += amount
+        print(f"Deposited {amount}. Current balance: {userid[user_id]}")
+    else:
+        print("Invalid User ID. Account not found.")
+
+def withdraw(user_id):
+    # Prompt user for amount to withdraw
+    amount = float(input("Enter the amount to withdraw: "))
+
+    if user_id in userid:
+        if userid[user_id] >= amount:
+            userid[user_id] -= amount
+            print(f"Withdrawn {amount}. Current balance: {userid[user_id]}")
+        else:
+            print("Insufficient balance.")
+    else:
+        print("Invalid User ID. Account not found.")
+
+def check_balance(user_id):
+    if user_id in userid:
+        print(f"Current balance for User ID {user_id}: {userid[user_id]}")
+    else:
+        print("Invalid User ID. Account not found.")
+
+def delete_account(user_id):
+    if user_id in userid:
+        del userid[user_id]
+        print(f"Account with User ID {user_id} has been successfully deleted.")
+    else:
+        print("Invalid User ID. Account not found.")
+
+def display_accounts():
+    print("User ID\t\tBalance")
+    for user_id, balance in userid.items():
+        print(f"{user_id}\t\t{balance}")
+
+# Main menu function
+def main_menu():
+    print("\nWelcome")
+    print("1. Create an Account")
+    print("2. Deposit Funds")
+    print("3. Withdraw Funds")
+    print("4. Check Balance")
+    print("5. Delete Account")
+    print("6. Display All Accounts")  # Option to display all accounts
+    print("7. Exit")
+
+    choice = input("Enter your choice (1-7): ")
+
+    if choice == '1':
+        user_id = create_account()
+    elif choice == '2':
+        user_id = int(input("Enter your ID to deposit into your account: "))
+        deposit(user_id)
+    elif choice == '3':
+        user_id = int(input("Enter your ID to withdraw from your account: "))
+        withdraw(user_id)
+    elif choice == '4':
+        user_id = int(input("Enter your ID to check balance: "))
+        check_balance(user_id)
+    elif choice == '5':
+        user_id = int(input("Enter your ID to delete account: "))
+        delete_account(user_id)
+    elif choice == '6':
+        display_accounts()  # Call the display function to show all accounts
+    elif choice == '7':
+        print("Thank you for using! Goodbye.")
+        return False
+    else:
+        print("Invalid choice. Please enter a number from 1 to 7.")
+
+    return True
+
+# Main program loop
+while main_menu():
+    pass
